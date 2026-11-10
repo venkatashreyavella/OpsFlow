@@ -1,0 +1,21 @@
+Total Orders = COUNTROWS(orders)
+
+Pending Orders = CALCULATE([Total Orders], orders[status] = "pending")
+
+Processing Orders = CALCULATE([Total Orders], orders[status] = "processing")
+
+Completed Orders = CALCULATE([Total Orders], orders[status] = "completed")
+
+Incoming Orders = CALCULATE([Total Orders], orders[direction] = "incoming")
+
+Outgoing Orders = CALCULATE([Total Orders], orders[direction] = "outgoing")
+
+Total Units = SUM(order_items[quantity])
+
+Delayed Shipments = CALCULATE(COUNTROWS(shipments), shipments[status] = "delayed")
+
+Delivered Shipments = CALCULATE(COUNTROWS(shipments), shipments[status] = "delivered")
+
+On Time Deliveries = COUNTROWS(FILTER(shipments, NOT ISBLANK(shipments[delivered_date]) && shipments[delivered_date] <= shipments[expected_delivery_date]))
+
+On Time Percentage = DIVIDE([On Time Deliveries], [Delivered Shipments])
